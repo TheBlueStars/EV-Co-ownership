@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom";
+import Shell from "./components/Shell";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Vehicles from "./pages/Vehicles";
+import Contracts from "./pages/Contracts";
+import Reports from "./pages/Reports";
+import System from "./pages/System";
+import { ToastProvider } from "./lib/toast";  // <— đổi tên import
 
-function App() {
-  const [count, setCount] = useState(0)
+function NotFound(){ return <div style={{padding:20}}>404 – Không tìm thấy trang</div>; }
 
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ToastProvider>
+      <Shell>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/vehicles" element={<Vehicles />} />
+          <Route path="/contracts" element={<Contracts />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/system" element={<System />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Shell>
+    </ToastProvider>
+  );
 }
-
-export default App
