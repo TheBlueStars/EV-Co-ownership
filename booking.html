@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Booking</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head><body>
+<div class="container">
+  <div class="header">
+    <div class="brand"><div class="logo"></div><div><strong>EV Co-owner</strong><div class="badge">Booking</div></div></div>
+    <div class="nav">
+      <a href="dashboard.html" class="btn">Dashboard</a>
+      <a href="my-costs.html" class="btn">Chi phí</a>
+      <button class="btn" id="logout">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tìm slot trống</h3>
+    <div class="grid">
+      <div class="field" style="grid-column:span 4"><label>Từ</label><input id="from" type="datetime-local" required></div>
+      <div class="field" style="grid-column:span 4"><label>Đến</label><input id="to" type="datetime-local" required></div>
+      <div class="field" style="grid-column:span 4"><label>&nbsp;</label><button class="btn" id="search">Tìm</button></div>
+    </div>
+    <div id="slots" class="grid" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card">
+    <h3>Check-in/Check-out</h3>
+    <div class="grid">
+      <div class="field" style="grid-column:span 6"><label>Mã đặt lịch</label><input id="bid" placeholder="VD: 12345"></div>
+      <div class="field" style="grid-column:span 6;display:flex;gap:8px;align-items:end">
+        <button class="btn" id="checkin">Check-in</button>
+        <button class="btn" id="checkout">Check-out</button>
+      </div>
+    </div>
+    <div id="qrWrap" class="row" style="display:none"><div>QR Check-in/out:</div><img id="qr" alt="QR" style="max-height:120px;border-radius:8px;border:1px solid var(--bd)"></div>
+  </div>
+
+  <div class="toast"></div>
+</div>
+<script type="module">
+  import { requireAuth, logout } from './assets/auth.js';
+  import { BookingAPI } from './assets/api.js';
+  import { toast, $, $all } from './assets/ui.js';
+  requireAuth(); $('#logout').onclick = logout;
+
+  $('#search').onclick = async ()=>{
+    const from = $('#from').value; const to = $('#to').value;
+    if(!from || !to){ toast('Vui lòng chọn khoảng thời gian'); return; }
+    const data = await BookingAPI.available(from,to); // [{start,end,vehicleId, pricePerHour, slotId}]
+    const box = $('#slots'); box.innerHTML='';
+    (data||[]).forEach(s=>{
+      const card = document.createElement('section'); card.className='card'; card.style.gridColumn='span 4';
+      card.innerHTML=`<div class="row">
+        <div>
+          <div><strong>${new Date(s.start).toLocaleString()}</strong> → ${new Date(s.end).toLocaleString()}</div>
+          <div class="badge">Xe ${s.vehicleId}</div> <span class="badge">${(s.pricePerHour||0).toLocaleString()} VND/h</span>
+        </div>
+        <button class="btn" data-id="${s.slotId}">Đặt</button>
+      </div>`;
+      card.querySelector('button').onclick = async ()=>{
+        const created = await BookingAPI.create({ slotId: s.slotId });
+        toast('Đặt lịch thành công: #' + created.id);
+      };
+      box.appendChild(card);
+    });
+  };
+
+  $('#checkin').onclick = async ()=>{
+    const id = $('#bid').value.trim(); if(!id) return toast('Nhập mã đặt lịch');
+    const res = await BookingAPI.checkin(id); // {qrUrl?}
+    toast('Check-in OK');
+    if(res && res.qrUrl){ $('#qr').src = res.qrUrl; $('#qrWrap').style.display='flex'; }
+  };
+  $('#checkout').onclick = async ()=>{
+    const id = $('#bid').value.trim(); if(!id) return toast('Nhập mã đặt lịch');
+    await BookingAPI.checkout(id);
+    toast('Check-out OK');
+  };
+</script>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Co-owner Dashboard</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head><body>
+<div class="container">
+  <div class="header">
+    <div class="brand"><div class="logo"></div><div><strong>EV Co-owner</strong><div class="badge">Dashboard</div></div></div>
+    <div class="nav">
+      <a href="booking.html" class="btn">Đặt lịch</a>
+      <a href="my-costs.html" class="btn">Chi phí cá nhân</a>
+      <button class="btn" id="logout">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid" style="margin-top:12px">
+    <section class="card" style="grid-column:span 6">
+      <h3>% Sở hữu vs % Sử dụng (tháng này)</h3>
+      <canvas id="bar"></canvas>
+    </section>
+    <section class="card" style="grid-column:span 6">
+      <h3>Cơ cấu chi phí cá nhân</h3>
+      <canvas id="donut"></canvas>
+    </section>
+
+    <section class="card" style="grid-column:span 12">
+      <h3>Lịch sử sử dụng gần đây</h3>
+      <table class="table" id="history">
+        <thead><tr><th>Mã</th><th>Thời gian</th><th>Km</th><th>Ghi chú</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="toast"></div>
+</div>
+<script type="module">
+  import { requireAuth, logout } from './assets/auth.js';
+  import { AuthAPI, BookingAPI, CostAPI } from './assets/api.js';
+  import { toast, $, drawBar, drawDonut } from './assets/ui.js';
+
+  requireAuth();
+  $('#logout').onclick = logout;
+
+  async function load(){
+    const me = await AuthAPI.me(); // {name, ownershipPercent, usagePercentMonth, ...}
+    const bookings = await BookingAPI.listMine(); // [{id, start, end, km, note}, ...]
+    const settlements = await CostAPI.mySettlements(); // {monthTotals:{electric:..., maintenance:..., insurance:...}, mySharePercent, ...}
+
+    // KPIs
+    const k = [
+      {t:'Sở hữu', v: me.ownershipPercent + '%'},
+      {t:'Sử dụng (tháng)', v: (me.usagePercentMonth||0)+'%'},
+      {t:'Lượt đặt lịch (tháng)', v: (me.bookingCountMonth||0)},
+      {t:'Chi phí dự kiến', v: (settlements.estimatedMyCost||0).toLocaleString()+' VND'}
+    ];
+    const kpis = $('#kpis'); kpis.innerHTML='';
+    k.forEach(x=>{
+      const d=document.createElement('div'); d.className='kpi'; d.innerHTML=`<div class="v">${x.v}</div><div class="t">${x.t}</div>`;
+      kpis.appendChild(d);
+    });
+
+    // Chart sở hữu vs sử dụng
+    drawBar($('#bar'), ['Sở hữu','Sử dụng'], [me.ownershipPercent||0, me.usagePercentMonth||0]);
+
+    // Donut chi phí
+    const mt = settlements.monthTotals || {};
+    drawDonut($('#donut'), [
+      {label:'Điện', value: mt.electric||0},
+      {label:'Bảo dưỡng', value: mt.maintenance||0},
+      {label:'Bảo hiểm', value: mt.insurance||0},
+      {label:'Khác', value: mt.other||0},
+    ]);
+
+    // Lịch sử
+    const tbody = $('#history tbody'); tbody.innerHTML='';
+    (bookings||[]).slice(0,10).forEach(b=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td><span class="badge">#${b.id}</span></td>
+        <td>${new Date(b.start).toLocaleString()} → ${new Date(b.end).toLocaleString()}</td>
+        <td>${(b.km||0)} km</td><td>${b.note||''}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  load().catch(()=>{/* lỗi đã toast ở api.js */});
+</script>
+</body></html>

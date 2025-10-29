@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Chi phí cá nhân</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head><body>
+<div class="container">
+  <div class="header">
+    <div class="brand"><div class="logo"></div><div><strong>EV Co-owner</strong><div class="badge">My Costs</div></div></div>
+    <div class="nav">
+      <a href="dashboard.html" class="btn">Dashboard</a>
+      <a href="booking.html" class="btn">Đặt lịch</a>
+      <button class="btn" id="logout">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section class="card" style="grid-column:span 6">
+      <h3>Các khoản phải trả (kỳ hiện tại)</h3>
+      <table class="table" id="dues"><thead><tr><th>Mục</th><th>Số tiền (VND)</th></tr></thead><tbody></tbody></table>
+      <div class="row">
+        <div>Tổng phải trả:</div><div id="total" class="badge">0 VND</div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>Thanh toán</div>
+        <button class="btn" id="pay">Thanh toán ngay</button>
+      </div>
+    </section>
+
+    <section class="card" style="grid-column:span 6">
+      <h3>Lịch sử thanh toán</h3>
+      <table class="table" id="payments"><thead><tr><th>Mã</th><th>Ngày</th><th>Số tiền</th><th>Trạng thái</th></tr></thead><tbody></tbody></table>
+    </section>
+  </div>
+  <div class="toast"></div>
+</div>
+<script type="module">
+  import { requireAuth, logout } from './assets/auth.js';
+  import { CostAPI } from './assets/api.js';
+  import { toast, $ } from './assets/ui.js';
+  requireAuth(); $('#logout').onclick = logout;
+
+  async function load(){
+    const s = await CostAPI.mySettlements(); // {current:{electric,maintenance,insurance,other}, totalDue, paymentIntent?}
+    const tbody = $('#dues tbody'); tbody.innerHTML='';
+    const cur = s.current||{};
+    const rows = [
+      ['Điện', cur.electric||0],
+      ['Bảo dưỡng', cur.maintenance||0],
+      ['Bảo hiểm', cur.insurance||0],
+      ['Khác', cur.other||0],
+    ];
+    rows.forEach(r=>{
+      const tr=document.createElement('tr'); tr.innerHTML=`<td>${r[0]}</td><td>${r[1].toLocaleString()}</td>`;
+      tbody.appendChild(tr);
+    });
+    $('#total').textContent = (s.totalDue||0).toLocaleString()+' VND';
+
+    const pay = await CostAPI.listPayments(); // [{id, createdAt, amount, status}]
+    const pbody = $('#payments tbody'); pbody.innerHTML='';
+    (pay||[]).forEach(p=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td><span class="badge">#${p.id}</span></td>
+        <td>${new Date(p.createdAt).toLocaleString()}</td>
+        <td>${(p.amount||0).toLocaleString()}</td>
+        <td>${p.status}</td>`;
+      pbody.appendChild(tr);
+    });
+  }
+
+  $('#pay').onclick = async ()=>{
+    const created = await CostAPI.pay({ method:'wallet' }); // BE tạo paymentIntent
+    toast('Tạo yêu cầu thanh toán #' + created.id);
+    if(created.redirectUrl){ location.href = created.redirectUrl; }
+  };
+
+  load().catch(()=>{});
+</script>
+</body></html>
