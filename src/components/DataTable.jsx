@@ -1,69 +1,68 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
-export default function DataTable({
-  columns, fetcher, pageSize = 10, defaultSort = "createdAt", defaultOrder = "desc", reloadKey = ""
-}){
+export default function DataTable({ columns, data = [], pageSize = 8, onRowClick }) {
+  const [q, setQ] = useState("");
+  const [sort, setSort] = useState({ key: null, dir: 1 });
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState(defaultSort);
-  const [order, setOrder] = useState(defaultOrder);
-  const [rows, setRows] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
 
-  const query = useMemo(() => ({ page, pageSize, search, sort, order }), [page, pageSize, search, sort, order]);
+  const filtered = useMemo(() => {
+    const kw = q.trim().toLowerCase();
+    let rows = !kw ? data : data.filter((r) =>
+      Object.values(r).some((v) => String(v ?? "").toLowerCase().includes(kw))
+    );
+    if (sort.key) {
+      rows = rows.slice().sort((a,b)=>{
+        const x=a[sort.key], y=b[sort.key];
+        return (x>y?1:x<y?-1:0)*sort.dir;
+      });
+    }
+    return rows;
+  }, [data, q, sort]);
 
-  useEffect(() => {
-    let alive = true; setLoading(true);
-    fetcher(query)
-      .then(({ items, total }) => { if(!alive) return; setRows(items || []); setTotal(total || 0); })
-      .catch(() => {})
-      .finally(() => alive && setLoading(false));
-    return () => { alive = false; };
-  }, [fetcher, query, reloadKey]);
-
-  const from = (page - 1) * pageSize + 1;
-  const to = Math.min(page * pageSize, total);
+  const total = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const view = filtered.slice((page-1)*pageSize, page*pageSize);
 
   return (
-    <>
+    <div>
       <div className="toolbar">
-        <input className="input" placeholder="Tìm kiếm..." value={search}
-          onChange={e => { setPage(1); setSearch(e.target.value.trimStart()); }} />
+        <input className="input" placeholder="Tìm kiếm..." value={q}
+               onChange={(e)=>{ setQ(e.target.value); setPage(1); }}/>
+        <div style={{flex:1}}/>
+        <div className="meta">Tổng: {filtered.length}</div>
       </div>
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              {columns.map(c => (
-                <th key={c.key}
-                  onClick={() => c.sortable && (setPage(1), setSort(c.key), setOrder(o => sort === c.key ? (o === "asc" ? "desc" : "asc") : "asc"))}
-                >
-                  {c.label}{c.sortable && sort === c.key ? (order === "asc" ? " ▲" : " ▼") : ""}
-                </th>
+
+      <table className="table">
+        <thead>
+          <tr>
+            {columns.map(c=>(
+              <th key={c.key} onClick={()=>setSort(s=>({ key:c.key, dir: s.key===c.key? -s.dir : 1 }))}
+                  style={{cursor:"pointer"}}>
+                {c.title}{sort.key===c.key ? (sort.dir>0?" ▲":" ▼") : ""}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {view.map((r,i)=>(
+            <tr key={r.id ?? i} onClick={()=>onRowClick?.(r)} style={{cursor:onRowClick?"pointer":"default"}}>
+              {columns.map(c=>(
+                <td key={c.key}>{c.render? c.render(r[c.key], r) : r[c.key]}</td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan={columns.length}>Đang tải…</td></tr>
-            ) : rows.length ? rows.map((r, i) => (
-              <tr key={r.id || i}>
-                {columns.map(c => (
-                  <td key={c.key} dangerouslySetInnerHTML={{ __html: c.render ? c.render(r) : (r[c.key] ?? "") }} />
-                ))}
-              </tr>
-            )) : (
-              <tr><td colSpan={columns.length}>Không có dữ liệu</td></tr>
-            )}
-          </tbody>
-        </table>
+          ))}
+          {view.length===0 && (
+            <tr><td colSpan={columns.length} style={{padding:22, textAlign:"center", color:"var(--muted)"}}>
+              Chưa có dữ liệu
+            </td></tr>
+          )}
+        </tbody>
+      </table>
+
+      <div className="toolbar" style={{justifyContent:"flex-end"}}>
+        <button className="btn" disabled={page<=1} onClick={()=>setPage(p=>p-1)}>« Trước</button>
+        <div className="meta">Trang {page}/{total}</div>
+        <button className="btn" disabled={page>=total} onClick={()=>setPage(p=>p+1)}>Sau »</button>
       </div>
-      <div className="pagination">
-        <button className="btn" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>‹</button>
-        <span>{total ? `${from}-${to}/${total}` : "0/0"}</span>
-        <button className="btn" onClick={() => setPage(p => p * pageSize < total ? p + 1 : p)} disabled={page * pageSize >= total}>›</button>
-      </div>
-    </>
+    </div>
   );
 }

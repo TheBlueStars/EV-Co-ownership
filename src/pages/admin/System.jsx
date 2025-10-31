@@ -1,7 +1,7 @@
 import { useState } from "react";
-import PageHeader from "../components/PageHeader";
-import { apiPost } from "../lib/api";
-import { useToast } from "../lib/toast";
+import PageHeader from "../../components/PageHeader";
+import { apiPost } from "../../lib/api";
+import { useToast } from "../../lib/toast";
 
 export default function System(){
   const { push } = useToast();
@@ -12,7 +12,7 @@ export default function System(){
 
   const save = async (key, data)=>{
     try{ await apiPost(`/api/system/${key}`, data); push("Đã lưu cấu hình","success"); }
-    catch(e){ push("Lỗi lưu cấu hình","error"); }
+    catch{ push("Lỗi lưu cấu hình","error"); }
   };
 
   return (
