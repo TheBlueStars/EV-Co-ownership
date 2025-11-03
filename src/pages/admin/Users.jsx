@@ -3,7 +3,7 @@ import PageHeader from "../../components/PageHeader";
 import DataTable from "../../components/DataTable";
 import FormModal from "../../components/FormModal";
 import { useToast } from "../../lib/toast";
-// import { apiGet, apiPost, apiDel } from "../../lib/api"; // TODO: bật khi nối API
+import { apiGet, apiPost, apiDel } from "../../lib/api";
 
 export default function Users(){
   const { push } = useToast();
@@ -13,20 +13,36 @@ export default function Users(){
   const [edit, setEdit] = useState(null);
   const [form, setForm] = useState({ fullName:"", email:"", role:"co-owner", active:true });
 
-  useEffect(()=>{ /* TODO: load users -> setItems */ },[]);
+  useEffect(()=>{
+    const load = async ()=>{
+      try{
+        const res = await apiGet("/api/users");
+        setItems(Array.isArray(res)? res : (res.items||[]));
+      }catch(err){ push(err?.message||"Không tải được danh sách người dùng","error"); }
+    };
+    load();
+  },[push]);
 
   const onNew = ()=>{ setEdit(null); setForm({ fullName:"", email:"", role:"co-owner", active:true }); setOpen(true); };
   const onEdit = (row)=>{ setEdit(row); setForm(row); setOpen(true); };
 
   const save = async ()=>{ 
-    // TODO: create/update user
-    push(edit?"Đã cập nhật người dùng":"Đã thêm người dùng","success"); 
-    setOpen(false); 
-    // reload
+    try{
+      if(edit){ await apiPost(`/api/users/${edit.id}`, form); }
+      else { await apiPost("/api/users", form); }
+      push(edit?"Đã cập nhật người dùng":"Đã thêm người dùng","success");
+      setOpen(false);
+      const res = await apiGet("/api/users");
+      setItems(Array.isArray(res)? res : (res.items||[]));
+    }catch(err){ push(err?.message||"Lưu thất bại","error"); }
   };
   const remove = async (row)=>{ 
-    // TODO: delete user
-    push("Đã xóa","success"); 
+    try{
+      await apiDel(`/api/users/${row.id}`);
+      push("Đã xóa","success");
+      const res = await apiGet("/api/users");
+      setItems(Array.isArray(res)? res : (res.items||[]));
+    }catch(err){ push(err?.message||"Xóa thất bại","error"); }
   };
 
   const cols = [

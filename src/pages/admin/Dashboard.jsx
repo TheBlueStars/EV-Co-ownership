@@ -10,7 +10,6 @@ export default function Dashboard(){
         <Kpi title="Tổng số xe" />
         <Kpi title="Nhóm đồng sở hữu" />
         <Kpi title="Doanh thu tháng" />
-        <div className="kpi" />
       </div>
 
       <div className="grid-2">

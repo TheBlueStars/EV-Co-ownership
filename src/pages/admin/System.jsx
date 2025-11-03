@@ -21,7 +21,7 @@ export default function System(){
       <div className="two-col" style={{gridTemplateColumns:"1fr 1fr"}}>
         {/* Bảo mật */}
         <div className="card">
-          <div className="section-title">Bảo mật 🔒</div>
+          <div className="section-title">Bảo mật </div>
           <div className="list-block">
             <label className="list-item-btn">Quản lí quyền truy cập <span className="meta">Thiết lập vai trò/role</span></label>
             <label className="list-item-btn">Nhật kí hoạt động <span className="meta">Audit log</span></label>
@@ -39,7 +39,7 @@ export default function System(){
 
         {/* Cấu hình email */}
         <div className="card">
-          <div className="section-title">Cấu hình Email 📧</div>
+          <div className="section-title">Cấu hình Email </div>
           <div style={{display:"grid",gap:10}}>
             <label>From <input className="input" value={email.from} onChange={e=>setEmail({...email,from:e.target.value})}/></label>
             <label>SMTP Host <input className="input" value={email.smtpHost} onChange={e=>setEmail({...email,smtpHost:e.target.value})}/></label>
@@ -52,7 +52,7 @@ export default function System(){
 
         {/* Thanh toán */}
         <div className="card">
-          <div className="section-title">Thanh toán 💳</div>
+          <div className="section-title">Thanh toán </div>
           <label>Nhà cung cấp
             <select className="input" value={pay.provider} onChange={e=>setPay({...pay,provider:e.target.value})}>
               <option value="stripe">Stripe</option>
@@ -67,7 +67,7 @@ export default function System(){
 
         {/* Tùy chỉnh giao diện */}
         <div className="card">
-          <div className="section-title">Tùy chỉnh giao diện 🎨</div>
+          <div className="section-title">Tùy chỉnh giao diện </div>
           <label>Tên thương hiệu <input className="input" value={ui.brandName} onChange={e=>setUi({...ui,brandName:e.target.value})}/></label>
           <label>Màu chủ đạo (HEX) <input className="input" value={ui.primary} onChange={e=>setUi({...ui,primary:e.target.value})}/></label>
           <div style={{textAlign:"right"}}><button className="btn btn-primary" onClick={()=>save("ui",ui)}>Lưu giao diện</button></div>

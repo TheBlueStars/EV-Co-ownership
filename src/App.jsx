@@ -1,13 +1,15 @@
-import React from "react";
-import { Routes, Route, Navigate, NavLink, Outlet } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import RouteTransition from "./components/RouteTransition.jsx";
 import { ToastHost } from "./lib/toast";
+import { apiGet } from "./lib/api";
 
 import AdminDashboard from "./pages/admin/Dashboard.jsx";
 import AdminUsers from "./pages/admin/Users.jsx";
 import AdminVehicles from "./pages/admin/Vehicles.jsx";
 import AdminContracts from "./pages/admin/Contracts.jsx";
 import AdminReports from "./pages/admin/Reports.jsx";
+import AdminSystem from "./pages/admin/System.jsx";
 
 import StaffDashboard from "./pages/staff/StaffDashboard.jsx";
 import StaffMaintenance from "./pages/staff/StaffMaintenance.jsx";
@@ -17,6 +19,21 @@ import StaffVehicles from "./pages/staff/StaffVehicles.jsx";
 import StaffSettings from "./pages/staff/StaffSettings.jsx";
 
 function TopBar({ role, staff }) {
+  const navigate = useNavigate();
+  const [openNotif, setOpenNotif] = useState(false);
+  const [notifs, setNotifs] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    if(!openNotif) return;
+    (async()=>{
+      try{
+        setLoading(true);
+        const res = await apiGet("/api/notifications");
+        setNotifs(Array.isArray(res)? res : (res.items||[]));
+      }catch{ /* ignore */ } finally { setLoading(false); }
+    })();
+  },[openNotif]);
   return (
     <header className="topbar">
       <div className="brand">
@@ -24,11 +41,33 @@ function TopBar({ role, staff }) {
         <b>EV Co-ownership</b>
         <span className="role">{role}</span>
       </div>
-      <div className="actions">
+      <div className="actions" style={{position:"relative"}}>
         <input className="search" placeholder="Tìm kiếm nhanh..." />
-        <button className="icon-btn" title="Thông báo"></button>
-        <button className="icon-btn" title="Tài khoản"></button>
-        <button className="btn btn-ghost">↦ Đăng xuất</button>
+        <button className="icon-btn" title="Thông báo" onClick={()=>setOpenNotif(o=>!o)}><span className="msr">notifications</span></button>
+        {openNotif && (
+          <div className="popover" style={{right:0, top:42, minWidth:300}}>
+            <div className="section-title">Thông báo</div>
+            <div className="notif-list">
+              {loading && <div className="meta" style={{padding:8}}>Đang tải...</div>}
+              {!loading && notifs.length===0 && <div className="meta" style={{padding:8}}>Chưa có thông báo</div>}
+              {!loading && notifs.map((n,i)=>(
+                <div key={n.id||i} className="notif-item">
+                  <span className="dot" style={{background:n.unread?"var(--c-blue)":"#e5e7eb"}}/>
+                  <div style={{flex:1}}>
+                    <div style={{fontWeight:600}}>{n.title||"Thông báo"}</div>
+                    <div className="meta">{n.message||"—"}</div>
+                  </div>
+                  <div className="meta">{n.time||""}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <button className="icon-btn" title="Cài đặt" onClick={()=>navigate(staff? "/staff/settings" : "/system")}> 
+          <span className="msr">settings</span>
+        </button>
+        <button className="icon-btn" title="Tài khoản"><span className="msr">account_circle</span></button>
+        <button className="btn btn-ghost"><span className="msr" style={{marginRight:6}}>logout</span>Đăng xuất</button>
       </div>
     </header>
   );
@@ -37,11 +76,11 @@ function TopBar({ role, staff }) {
 /* Layout Admin */
 function AdminLayout(){
   const nav = [
-    {to:"admin/dashboard", label:"Tổng quan", icon:""},
-    {to:"admin/users",     label:"Người dùng", icon:""},
-    {to:"admin/vehicles",  label:"Quản lí xe", icon:""},
-    {to:"admin/contracts", label:"Hợp đồng", icon:""},
-    {to:"admin/reports",   label:"Báo cáo", icon:""},
+    {to:"/dashboard", label:"Tổng quan", icon:<span className="msr">dashboard</span>},
+    {to:"/users",     label:"Người dùng", icon:<span className="msr">group</span>},
+    {to:"/vehicles",  label:"Quản lí xe", icon:<span className="msr">directions_car</span>},
+    {to:"/contracts", label:"Hợp đồng", icon:<span className="msr">description</span>},
+    {to:"/reports",   label:"Báo cáo", icon:<span className="msr">bar_chart</span>},
   ];
   return (
     <div className="app-shell">
@@ -61,12 +100,12 @@ function AdminLayout(){
 /* Layout Staff */
 function StaffLayout(){
   const nav = [
-    {to:"/staff/dashboard",    label:"Dashboard",   icon:""},
-    {to:"/staff/maintenance",  label:"Maintenance", icon:""},
-    {to:"/staff/costs",        label:"Chi phí",     icon:""},
-    {to:"/staff/incidents",    label:"Sự cố",       icon:""},
-    {to:"/staff/vehicles",     label:"Xe",          icon:""},
-    {to:"/staff/settings",     label:"Cài đặt",     icon:""},
+    {to:"/staff/dashboard",    label:"Dashboard",   icon:<span className="msr">dashboard</span>},
+    {to:"/staff/maintenance",  label:"Maintenance", icon:<span className="msr">build</span>},
+    {to:"/staff/costs",        label:"Chi phí",     icon:<span className="msr">receipt_long</span>},
+    {to:"/staff/incidents",    label:"Sự cố",       icon:<span className="msr">report</span>},
+    {to:"/staff/vehicles",     label:"Xe",          icon:<span className="msr">directions_car</span>},
+    {to:"/staff/settings",     label:"Cài đặt",     icon:<span className="msr">settings</span>},
   ];
   return (
     <div className="app-shell app-shell--staff">
@@ -108,6 +147,9 @@ export default function App(){
           <Route path="vehicles" element={<StaffVehicles/>}/>
           <Route path="settings" element={<StaffSettings/>}/>
         </Route>
+
+        {/* ADMIN SETTINGS */}
+        <Route path="/system" element={<AdminSystem/>}/>
 
         <Route path="*" element={<Navigate to="/dashboard" replace/>}/>
       </Routes>

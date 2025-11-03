@@ -3,7 +3,7 @@ import PageHeader from "../../components/PageHeader";
 import FormModal from "../../components/FormModal";
 import Skeleton from "../../components/Skeleton";
 import { useToast } from "../../lib/toast";
-// import { apiGet, apiPost, apiDel } from "../../lib/api";
+import { apiGet, apiPost, apiDel } from "../../lib/api";
 
 export default function Vehicles(){
   const { push } = useToast();
@@ -13,12 +13,31 @@ export default function Vehicles(){
   const [edit, setEdit] = useState(null);
   const [form, setForm] = useState({ name:"", vin:"", group:"", owners:0, revenue:"0" });
 
-  useEffect(()=>{ /* TODO: load vehicles -> setItems */ },[]);
+  useEffect(()=>{
+    const load = async ()=>{
+      const res = await apiGet("/api/vehicles");
+      setItems(Array.isArray(res)? res : (res.items||[]));
+    };
+    load();
+  },[]);
 
   const onNew = ()=>{ setEdit(null); setForm({ name:"", vin:"", group:"", owners:0, revenue:"0" }); setOpen(true); };
   const onEdit = (v)=>{ setEdit(v); setForm(v); setOpen(true); };
-  const save = async ()=>{ push(edit?"Đã cập nhật xe":"Đã thêm xe","success"); setOpen(false); };
-  const remove = async ()=>{ push("Đã xóa","success"); };
+  const save = async ()=>{ 
+    if(edit){ await apiPost(`/api/vehicles/${edit.id}`, form); }
+    else { await apiPost("/api/vehicles", form); }
+    push(edit?"Đã cập nhật xe":"Đã thêm xe","success");
+    setOpen(false);
+    const res = await apiGet("/api/vehicles");
+    setItems(Array.isArray(res)? res : (res.items||[]));
+  };
+  const remove = async ()=>{ 
+    if(!edit) return;
+    await apiDel(`/api/vehicles/${edit.id}`);
+    push("Đã xóa","success");
+    const res = await apiGet("/api/vehicles");
+    setItems(Array.isArray(res)? res : (res.items||[]));
+  };
 
   return (
     <div className="grid">
