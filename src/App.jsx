@@ -26,8 +26,8 @@ function TopBar({ role, staff }) {
       </div>
       <div className="actions">
         <input className="search" placeholder="Tìm kiếm nhanh..." />
-        <button className="icon-btn" title="Thông báo">🔔</button>
-        <button className="icon-btn" title="Tài khoản">👤</button>
+        <button className="icon-btn" title="Thông báo"></button>
+        <button className="icon-btn" title="Tài khoản"></button>
         <button className="btn btn-ghost">↦ Đăng xuất</button>
       </div>
     </header>
@@ -37,11 +37,11 @@ function TopBar({ role, staff }) {
 /* Layout Admin */
 function AdminLayout(){
   const nav = [
-    {to:"/dashboard", label:"Tổng quan", icon:"🏠"},
-    {to:"/users",     label:"Người dùng", icon:"👥"},
-    {to:"/vehicles",  label:"Quản lí xe", icon:"🚗"},
-    {to:"/contracts", label:"Hợp đồng", icon:"📄"},
-    {to:"/reports",   label:"Báo cáo", icon:"📊"},
+    {to:"admin/dashboard", label:"Tổng quan", icon:""},
+    {to:"admin/users",     label:"Người dùng", icon:""},
+    {to:"admin/vehicles",  label:"Quản lí xe", icon:""},
+    {to:"admin/contracts", label:"Hợp đồng", icon:""},
+    {to:"admin/reports",   label:"Báo cáo", icon:""},
   ];
   return (
     <div className="app-shell">
@@ -61,12 +61,12 @@ function AdminLayout(){
 /* Layout Staff */
 function StaffLayout(){
   const nav = [
-    {to:"/staff/dashboard",    label:"Dashboard",   icon:"📈"},
-    {to:"/staff/maintenance",  label:"Maintenance", icon:"🛠️"},
-    {to:"/staff/costs",        label:"Chi phí",     icon:"💸"},
-    {to:"/staff/incidents",    label:"Sự cố",       icon:"🚨"},
-    {to:"/staff/vehicles",     label:"Xe",          icon:"🚗"},
-    {to:"/staff/settings",     label:"Cài đặt",     icon:"⚙️"},
+    {to:"/staff/dashboard",    label:"Dashboard",   icon:""},
+    {to:"/staff/maintenance",  label:"Maintenance", icon:""},
+    {to:"/staff/costs",        label:"Chi phí",     icon:""},
+    {to:"/staff/incidents",    label:"Sự cố",       icon:""},
+    {to:"/staff/vehicles",     label:"Xe",          icon:""},
+    {to:"/staff/settings",     label:"Cài đặt",     icon:""},
   ];
   return (
     <div className="app-shell app-shell--staff">

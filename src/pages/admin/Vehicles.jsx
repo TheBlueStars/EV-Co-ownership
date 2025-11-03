@@ -7,7 +7,7 @@ import { useToast } from "../../lib/toast";
 
 export default function Vehicles(){
   const { push } = useToast();
-  const [loading] = useState(false); // TODO
+  const [loading] = useState(false); 
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(null);
