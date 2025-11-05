@@ -1,30 +1,30 @@
-package com.ev_co_ownership.security;
+package com.ev_co_ownership.model;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
+@Entity
+@Table(name = "users") // tên bảng trong MySQL
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .anyRequest().authenticated()
-            )
-            .httpBasic();
-        return http.build();
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Column(nullable = false)
+    private String name;  // Tên người dùng
+
+    @Column(nullable = false, unique = true)
+    private String email; // Email đăng nhập
+
+    @Column(nullable = false)
+    private String password; // Mật khẩu (đã mã hóa)
+
+    @Column
+    private String role = "USER"; // Vai trò mặc định
 }
