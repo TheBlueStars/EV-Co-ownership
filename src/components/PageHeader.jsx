@@ -17,17 +17,31 @@ export default function PageHeader() {
 
         {/* Center nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? "text-sky-600 font-medium" : "text-slate-600 hover:text-slate-900"
-            }
-          >
-            Trang chủ
-          </NavLink>
-          <a href="#features" className="text-slate-600 hover:text-slate-900">Tính năng</a>
-          <NavLink to="/about" className="text-slate-600 hover:text-slate-900">Về chúng tôi</NavLink>
-          <NavLink to="/contact" className="text-slate-600 hover:text-slate-900">Liên hệ</NavLink>
+          {/* 1) Viết 1 helper cho class của NavLink */}
+          {(() => {
+            const navCls = ({ isActive }) =>
+              `relative px-1 transition-colors after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-sky-500 after:transition-all
+       ${isActive
+                ? "text-sky-600 font-semibold after:w-full"
+                : "text-slate-600 hover:text-slate-900 after:w-0 hover:after:w-full"}`;
+
+            return (
+              <>
+                <NavLink to="/home" className={navCls}>
+                  Trang chủ
+                </NavLink>
+                <NavLink to="/features" className={navCls}>
+                  Tính năng
+                </NavLink>
+                <NavLink to="/about" className={navCls}>
+                  Về chúng tôi
+                </NavLink>
+                <NavLink to="/contact" className={navCls}>
+                  Liên hệ
+                </NavLink>
+              </>
+            );
+          })()}
         </nav>
 
         {/* Actions */}

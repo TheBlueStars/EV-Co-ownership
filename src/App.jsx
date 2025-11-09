@@ -4,10 +4,13 @@ import RouteTransition from "./components/RouteTransition.jsx";
 import { ToastHost } from "./lib/toast";
 import { apiGet } from "./lib/api";
 
-/* ===== Public pages (Login / Register) ===== */
+/* ===== Public pages  ===== */
 import Register from "./pages/co-owner/Register.jsx";
 import Login from "./pages/co-owner/Login.jsx";
 import Home from "./pages/co-owner/Home.jsx";
+import Features from "./pages/co-owner/Features.jsx";
+import About from "./pages/co-owner/About.jsx";
+import Contact from "./pages/co-owner/Contact.jsx";
 
 /* ===== Admin pages ===== */
 import AdminDashboard from "./pages/admin/Dashboard.jsx";
@@ -160,9 +163,10 @@ export default function App() {
         {/* ===== PUBLIC ===== */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />         {/* ✅ trang chủ mới */}
+        <Route path="/home" element={<Home />} />         
         <Route path="/" element={<Navigate to="/home" replace />} />
-
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
 
         {/* ===== ADMIN ===== */}
@@ -192,6 +196,9 @@ export default function App() {
 
         {/* ===== ADMIN SETTINGS ===== */}
         <Route path="/system" element={<AdminSystem />} />
+
+        {/* ===== FEATURES ===== */}
+        <Route path="/features" element={<Features />} />
 
         {/* ===== FALLBACK ===== */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
