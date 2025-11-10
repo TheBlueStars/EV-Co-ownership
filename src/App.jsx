@@ -31,6 +31,12 @@ import StaffSettings from "./pages/staff/StaffSettings.jsx";
 /* ===== Optional public home (không dùng làm trang chủ) ===== */
 // import Home from "./pages/co-owner/Home.jsx";
 import Footer from "./components/Footer.jsx";
+import OwnerOverview from "./pages/co-owner/OwnerOverview.jsx";
+import OwnerBooking from "./pages/co-owner/OwnerBooking.jsx";
+import OwnerCosts from "./pages/co-owner/OwnerCosts.jsx";
+import OwnerGroup from "./pages/co-owner/OwnerGroup.jsx";
+import Contracts from "./pages/co-owner/Contracts.jsx";
+import History from "./pages/co-owner/History.jsx";
 
 /* ---------------- Top Bar (giữ nguyên của bạn) ---------------- */
 function TopBar({ role, staff }) {
@@ -202,6 +208,19 @@ export default function App() {
 
         {/* ===== FALLBACK ===== */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+
+        <Route path="/owner/overview" element={<OwnerOverview />} />
+
+        <Route path="/owner/booking" element={<OwnerBooking />} />
+
+        <Route path="/owner/costs" element={<OwnerCosts />} />
+
+        <Route path="/owner/group" element={<OwnerGroup />} />
+
+        <Route path="/owner/contracts" element={<Contracts />} />
+
+        <Route path="/owner/history" element={<History />} />
+
       </Routes>
     </>
   );
