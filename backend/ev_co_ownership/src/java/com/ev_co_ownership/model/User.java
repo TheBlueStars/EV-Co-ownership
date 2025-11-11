@@ -1,4 +1,4 @@
-package com.example.ev_co_ownership.model;
+package com.ev_co_ownership.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,4 +23,3 @@ public class User {
 
     private String phone;
 }
-

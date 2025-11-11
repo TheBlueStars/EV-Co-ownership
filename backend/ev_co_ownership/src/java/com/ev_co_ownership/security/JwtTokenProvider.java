@@ -1,14 +1,18 @@
 package com.ev_co_ownership.security;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    private final String SECRET_KEY = "evco_secret_key";
-    private final long EXPIRATION_TIME = 86400000; // 1 ngày
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+
+    @Value("${jwt.expiration}")
+    private long EXPIRATION_TIME;
 
     public String generateToken(String email, String role) {
         return Jwts.builder()
