@@ -1,0 +1,23 @@
+services:
+  app:
+    image: openjdk:21-jdk-slim
+    container_name: ev-co-ownership-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    working_dir: /app
+    command: ["./mvnw", "spring-boot:run"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  gateway:
+    image: nginx:alpine
+    container_name: ev-co-ownership-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
