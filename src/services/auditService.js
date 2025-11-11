@@ -1,1 +1,3 @@
-﻿import api from './api'; export const listAudits=()=>api.get('/v1/audits');
+﻿import api from '../services/api'
+export const login = (payload)=>api.post('/auth/login', payload)
+export const register = (payload)=>api.post('/auth/register', payload)

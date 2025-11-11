@@ -1,15 +1,14 @@
-﻿@tailwind base;
-@tailwind components;
-@tailwind utilities;
+﻿/* src/index.css */
+@import "tailwindcss";
+
+/* Design tokens (tuỳ chọn) */
 :root {
   --primary: #00c853;
   --text: #0f172a;
   --muted: #64748b;
   --bg: #f8fafc;
 }
-* {
-  box-sizing: border-box;
-}
+
 html,
 body,
 #root {
@@ -19,6 +18,8 @@ body {
   margin: 0;
   font-family: Inter, system-ui, Roboto, Arial;
 }
+
+/* App shell (nếu bạn dùng layout cũ) */
 .app-shell {
   min-height: 100%;
   display: flex;
@@ -32,36 +33,27 @@ body {
   flex: 1;
   width: 100%;
 }
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-.card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 16px;
-}
-.grid {
-  display: grid;
-  gap: 16px;
-}
+
+/* ------- Utilities/Components (Tailwind-friendly) ------- */
 .btn {
-  border: 0;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
+  @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 text-white shadow-[0_20px_60px_rgba(2,6,23,.06)] transition;
 }
 .btn-primary {
-  background: var(--primary);
-  color: #fff;
+  @apply bg-[linear-gradient(90deg,#1D4ED8_0%,#0EA5E9_100%)] hover:brightness-110;
 }
-.input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+.btn-ghost {
+  @apply border border-slate-200 bg-white/80 text-slate-700 hover:bg-white;
 }
+
+.pill {
+  @apply inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-sm text-slate-700 backdrop-blur;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-[0_20px_60px_rgba(2,6,23,.06)] backdrop-blur;
+}
+
+/* Navbar cũ (nếu còn dùng) */
 nav.nav {
   background: #fff;
   border-bottom: 1px solid #e2e8f0;
@@ -75,25 +67,10 @@ nav.nav .inner {
   align-items: center;
   justify-content: space-between;
 }
+
+/* Footer cũ */
 footer {
   padding: 24px;
   text-align: center;
   color: var(--muted);
-}
-
-/* Utils nhỏ để dùng lại */
-.btn {
-  @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 text-white shadow-soft transition;
-}
-.btn-primary {
-  @apply bg-[linear-gradient(90deg,#1D4ED8_0%,#0EA5E9_100%)] hover:brightness-110;
-}
-.btn-ghost {
-  @apply bg-white/80 text-slate-700 hover:bg-white border border-slate-200;
-}
-.pill {
-  @apply inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-sm text-slate-700 backdrop-blur;
-}
-.card {
-  @apply rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-soft backdrop-blur;
 }
