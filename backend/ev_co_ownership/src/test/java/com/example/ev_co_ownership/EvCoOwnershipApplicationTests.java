@@ -1,4 +1,4 @@
-// package com.ev.ev_co_ownership;
+// package com.example.ev_co_ownership;
 
 // import org.junit.jupiter.api.Test;
 // import org.springframework.boot.test.context.SpringBootTest;

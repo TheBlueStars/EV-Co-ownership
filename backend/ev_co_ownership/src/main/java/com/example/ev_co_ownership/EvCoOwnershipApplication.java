@@ -1,4 +1,4 @@
-package com.ev_co_ownership;
+package com.example.ev_co_ownership;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

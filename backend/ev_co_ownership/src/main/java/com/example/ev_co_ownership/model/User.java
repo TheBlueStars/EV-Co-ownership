@@ -1,4 +1,4 @@
-package com.ev_co_ownership.model;
+package com.example.ev_co_ownership.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,4 +22,10 @@ public class User {
     private String email;
 
     private String phone;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String role;
 }

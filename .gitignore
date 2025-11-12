@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Application properties (contains sensitive data)
+backend/ev_co_ownership/src/main/resources/application.properties

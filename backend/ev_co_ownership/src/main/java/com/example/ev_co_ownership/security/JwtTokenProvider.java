@@ -1,4 +1,4 @@
-package com.ev_co_ownership.security;
+package com.example.ev_co_ownership.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

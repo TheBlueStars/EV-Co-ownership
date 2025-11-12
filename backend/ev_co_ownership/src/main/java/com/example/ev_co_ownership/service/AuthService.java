@@ -1,8 +1,8 @@
-package com.ev_co_ownership.service;
+package com.example.ev_co_ownership.service;
 
-import com.ev_co_ownership.model.User;
-import com.ev_co_ownership.repository.UserRepository;
-import com.ev_co_ownership.security.JwtTokenProvider;
+import com.example.ev_co_ownership.model.User;
+import com.example.ev_co_ownership.repository.UserRepository;
+import com.example.ev_co_ownership.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

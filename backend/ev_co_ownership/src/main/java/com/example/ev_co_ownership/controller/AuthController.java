@@ -1,9 +1,10 @@
-package com.ev_co_ownership.controller;
+package com.example.ev_co_ownership.controller;
 
-import com.ev_co_ownership.model.User;
-import com.ev_co_ownership.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.ev_co_ownership.model.User;
+import com.example.ev_co_ownership.service.AuthService;
 
 import java.util.Map;
 
