@@ -23,8 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# === Backend ===
-backend/target/
-backend/**/logs/
-backend/*.env
-backend/*.properties
+# Application properties (contains sensitive data)
+backend/ev_co_ownership/src/main/resources/*
