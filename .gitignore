@@ -23,8 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
-# === Backend ===
-backend/target/
-backend/**/logs/
-backend/*.env
-backend/*.properties
+# Backend
+backend/ev_co_ownership/target/
+backend/ev_co_ownership/logs/
+backend/ev_co_ownership/*.log
+backend/ev_co_ownership/application-*.yml   
+backend/ev_co_ownership/application-*.properties
+backend/ev_co_ownership/*.env
+backend/ev_co_ownership/.idea/
+backend/ev_co_ownership/.vscode/
+backend/ev_co_ownership/*.iml
