@@ -1,0 +1,10 @@
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\security\JwtTokenProvider.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\service\UserService.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\controller\AuthController.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\repository\UserRepository.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\config\GatewayConfig.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\config\SecurityConfig.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\EvCoOwnershipApplication.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\service\AuthService.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\model\User.java
+D:\EV-Co-ownership1\backend\ev_co_ownership\src\main\java\com\example\ev_co_ownership\security\JwtAuthenticationFilter.java

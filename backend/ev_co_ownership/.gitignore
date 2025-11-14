@@ -1,0 +1,19 @@
+# Maven build
+target/
+!.mvn/wrapper/maven-wrapper.jar
+**/logs/
+*.log
+
+# Spring Boot
+application-*.yml
+application-*.properties
+*.env
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
