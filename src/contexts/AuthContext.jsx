@@ -1,26 +1,83 @@
-﻿import { createContext, useContext, useEffect, useState } from 'react'
-const AuthContext = createContext(null)
+﻿// src/contexts/AuthContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
+import { FRONTEND_ROUTES, ROLES } from "../utils/constants";
+
+const AuthContext = createContext();
+
+const MOCK_USERS = [
+  {
+    id: 1,
+    name: "Admin User",
+    email: "admin@gmail.com",
+    password: "123456",
+    role: ROLES.ADMIN,
+  },
+  {
+    id: 2,
+    name: "Staff User",
+    email: "staff@gmail.com",
+    password: "123456",
+    role: ROLES.STAFF,
+  },
+  {
+    id: 3,
+    name: "Co-owner User",
+    email: "coowner@gmail.com",
+    password: "123456",
+    role: ROLES.CO_OWNER,
+  },
+];
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null);
 
+  // Load từ localStorage
   useEffect(() => {
-    const t = localStorage.getItem('token')
-    const u = localStorage.getItem('user')
-    if (t) setToken(t)
-    if (u) setUser(JSON.parse(u))
-  }, [])
+    const cached = localStorage.getItem("mock_user");
+    if (cached) {
+      try {
+        setUser(JSON.parse(cached));
+      } catch {
+        localStorage.removeItem("mock_user");
+      }
+    }
+  }, []);
 
-  const login = (tk, u) => {
-    setToken(tk); setUser(u)
-    localStorage.setItem('token', tk)
-    localStorage.setItem('user', JSON.stringify(u))
-  }
+  // mock login
+  const login = async (email, password) => {
+    const found = MOCK_USERS.find(
+      (u) => u.email === email && u.password === password,
+    );
+    if (!found) {
+      throw new Error("Sai email hoặc mật khẩu");
+    }
+
+    const { password: _pw, ...userData } = found;
+    localStorage.setItem("mock_user", JSON.stringify(userData));
+    setUser(userData);
+    return userData;
+  };
+
   const logout = () => {
-    setToken(null); setUser(null)
-    localStorage.removeItem('token'); localStorage.removeItem('user')
-  }
-  return <AuthContext.Provider value={{ user, token, login, logout }}>{children}</AuthContext.Provider>
+    localStorage.removeItem("mock_user");
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        login,
+        logout,
+        FRONTEND_ROUTES,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
-export function useAuth(){ return useContext(AuthContext) }
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

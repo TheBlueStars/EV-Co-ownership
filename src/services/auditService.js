@@ -1,3 +1,5 @@
-﻿import api from '../services/api'
-export const login = (payload)=>api.post('/auth/login', payload)
-export const register = (payload)=>api.post('/auth/register', payload)
+﻿// src/services/auditService.js
+import api from "./api";
+
+export const listAuditLogs = (params) =>
+  api.get("/v1/audit-logs", { params });
