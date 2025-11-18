@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.github
+backend
+docker-seed
+*.log
+.env
+.DS_Store

@@ -1,0 +1,22 @@
+# Build stage
+FROM node:20-alpine AS build
+WORKDIR /app
+
+# Copy chỉ những thứ cần thiết trước để tận dụng cache
+COPY package*.json ./
+RUN npm install
+
+# Copy toàn bộ source (vì frontend nằm ở root)
+COPY . .
+
+# Build với base đúng
+RUN npm run build -- --base=/
+
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy nginx config (nếu mày có customize, không thì dùng default cũng được)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80

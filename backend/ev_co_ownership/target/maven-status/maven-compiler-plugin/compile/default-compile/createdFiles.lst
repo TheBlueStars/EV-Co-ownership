@@ -1,1 +1,11 @@
-com\ev_co_ownership\EvCoOwnershipApplication.class
+com\example\ev_co_ownership\security\JwtTokenProvider.class
+com\example\ev_co_ownership\service\UserService.class
+com\example\ev_co_ownership\EvCoOwnershipApplication.class
+com\example\ev_co_ownership\controller\AuthController.class
+com\example\ev_co_ownership\model\User.class
+com\example\ev_co_ownership\security\JwtAuthenticationFilter.class
+com\example\ev_co_ownership\repository\UserRepository.class
+com\example\ev_co_ownership\config\GatewayConfig.class
+com\example\ev_co_ownership\service\AuthService.class
+com\example\ev_co_ownership\config\SecurityConfig.class
+com\example\ev_co_ownership\model\User$UserBuilder.class
