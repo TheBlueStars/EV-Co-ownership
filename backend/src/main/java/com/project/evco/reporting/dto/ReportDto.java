@@ -1,0 +1,12 @@
+package com.project.evco.reporting.dto;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class ReportDto {
+    private String key;
+    private String name;
+    private String description;
+}
