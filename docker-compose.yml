@@ -11,6 +11,8 @@ services:
       MYSQL_USER: evco
       MYSQL_PASSWORD: 123456
     ports:
+      # Bên ngoài: 3307, bên trong container: 3306
+      # => Kết nối từ máy thật dùng 127.0.0.1:3307
       - "3307:3306"
     command:
       - "--character-set-server=utf8mb4"
@@ -41,38 +43,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
-      APP_JWT_SECRET: evco
+      APP_JWT_SECRET: evco-super-secret
     ports:
       - "8080:8080"
-
-  frontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
-    container_name: evco-frontend
-    restart: unless-stopped
-    depends_on:
-      - backend
-    ports:
-      - "4173:80"
-    environment:
-      # Optional: nếu muốn build FE dùng baseURL theo backend trong docker
-      VITE_API_BASE_URL: http://localhost:8080/api
-
-  nifi:
-    image: apache/nifi:1.27.0
-    container_name: evco-nifi
-    restart: unless-stopped
-    ports:
-      - "8443:8443"
-    environment:
-      NIFI_WEB_HTTPS_PORT: 8443
-      NIFI_WEB_HTTPS_HOST: 0.0.0.0
-      SINGLE_USER_CREDENTIALS_USERNAME: admin
-      SINGLE_USER_CREDENTIALS_PASSWORD: admin12345
-    volumes:
-      # Mount flow xml để bạn import / cấu hình bên trong NiFi UI
-      - ./nifi:/opt/nifi/nifi-current/conf/evco
 
 volumes:
   mysql_data:
