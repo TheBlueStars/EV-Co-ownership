@@ -1,0 +1,74 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: evco-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: evco_db
+      MYSQL_USER: evco
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3307:3306"
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: evco-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: evco-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/evco_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: evco
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      APP_JWT_SECRET: evco-super-secret
+    ports:
+      - "8080:8080"
+
+  gateway:
+    build:
+      context: ./gateway/gateway
+      dockerfile: Dockerfile
+    container_name: evco-gateway
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      BACKEND_URI: http://backend:8080
+    ports:
+      - "8081:8081"
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://gateway:8081/api
+    container_name: evco-frontend
+    restart: unless-stopped
+    depends_on:
+      - gateway
+    ports:
+      - "3000:80"
+
+volumes:
+  mysql_data:
