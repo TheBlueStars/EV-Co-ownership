@@ -1,0 +1,48 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: evco-backend
+  main:
+    allow-bean-definition-overriding: true
+  flyway:
+    enabled: false
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3307/evco_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:evco}
+    password: ${SPRING_DATASOURCE_PASSWORD:123456}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:redis}
+      port: ${SPRING_REDIS_PORT:6379}
+      repositories:
+        enabled: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME:your_email@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:your_app_password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    # Use an environment variable APP_JWT_SECRET with at least 32 bytes; default provided here for local testing
+    secret: ${APP_JWT_SECRET:n4v8K3p9QwErT6yUiOpAsDfGhJkLzXcVbNm12QwErT6yUiOpAsDfGhJkLzXcVbN}
+    expires-in: 604800000

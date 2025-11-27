@@ -1,0 +1,42 @@
+﻿server:
+  port: 8090
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/evco_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: evco
+    password: "123456"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      repositories:
+        enabled: false
+  flyway:
+    enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: nguyentruongnct8@gmail.com
+    password: nguyentruong2k5
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    # Use a secret at least 32 bytes long (>=256 bits) for HS256
+    secret: "n4v8K3p9QwErT6yUiOpAsDfGhJkLzXcVbNm12QwErT6yUiOpAsDfGhJkLzXcVbN"
+    expires-in: 86400000

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="EVCO Backend - Minimal Tests" tests="3" time="1.732">
+  <testsuite name="Auth - Register" id="252d2450-9750-4a6c-a52d-937418dcb41e" timestamp="2025-11-26T09:50:05.215Z" tests="0" failures="0" errors="0" time="1.506"/>
+  <testsuite name="Auth - Login" id="727cd3ab-06a2-46ca-b404-65a7db7fedf7" timestamp="2025-11-26T09:50:05.215Z" tests="0" failures="0" errors="0" time="0.177"/>
+  <testsuite name="Groups - List" id="04f29bec-3d02-4dfc-a06b-b959bc249592" timestamp="2025-11-26T09:50:05.215Z" tests="0" failures="0" errors="0" time="0.049"/>
+</testsuites>

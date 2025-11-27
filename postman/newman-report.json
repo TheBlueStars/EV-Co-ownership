@@ -1,0 +1,1788 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "evco-minimal"
+    },
+    "item": [
+      {
+        "id": "1596c8cc-c5b3-45b1-9c32-004839664ab7",
+        "name": "Auth - Register",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "auth",
+              "register"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\",\n  \"fullName\": \"Test User\"\n}"
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "c7bee2b3-8c39-47ce-9fb0-4993201e2863",
+        "name": "Auth - Login",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "auth",
+              "login"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ae8539d0-56be-4c5d-81e8-0bf903aaca68",
+              "type": "text/javascript",
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json && json.token) {",
+                "    pm.environment.set('authToken', json.token);",
+                "}"
+              ],
+              "_lastExecutionId": "21a1241a-e4ec-4934-8eac-9358f7023c1c"
+            }
+          }
+        ]
+      },
+      {
+        "id": "0556e644-205c-4f0f-8065-25d3ccb1366d",
+        "name": "Auth - Verify",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "auth",
+              "verify"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"code\": \"123456\"\n}"
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "58d86951-8add-4a84-aca6-a61a23a21503",
+        "name": "Auth - Resend",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "auth",
+              "resend"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+          }
+        },
+        "response": [],
+        "event": []
+      },
+      {
+        "id": "c255052e-a511-485f-9116-d4078649c1f1",
+        "name": "Groups - List",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "governance",
+              "groups"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{authToken}}"
+            }
+          ],
+          "method": "GET"
+        },
+        "response": [],
+        "event": []
+      }
+    ],
+    "event": [],
+    "variable": [],
+    "info": {
+      "_postman_id": "evco-minimal",
+      "name": "EVCO Backend - Minimal Tests",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": {
+        "content": "Minimal collection to smoke-test core endpoints",
+        "type": "text/plain"
+      }
+    }
+  },
+  "environment": {
+    "_": {
+      "postman_variable_scope": "environment",
+      "postman_exported_at": "2025-11-26T00:00:00.000Z",
+      "postman_exported_using": "postman/evco-minimal"
+    },
+    "id": "evco-local-env",
+    "name": "EVCO Local",
+    "values": [
+      {
+        "type": "any",
+        "value": "http://host.docker.internal:8080",
+        "key": "baseUrl"
+      },
+      {
+        "type": "any",
+        "value": "",
+        "key": "authToken"
+      }
+    ]
+  },
+  "globals": {
+    "id": "f97b2984-5b73-43d6-b399-acb52bbbf0b1",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 51.4,
+      "responseMin": 10,
+      "responseMax": 114,
+      "responseSd": 37.797354404772825,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1764151207909,
+      "completed": 1764151208242
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 5,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "117c65a0-4ec2-4a5e-8c5e-327dfa886ec0",
+          "httpRequestId": "343cd632-2895-4f46-b1d8-f12b05f4ccca"
+        },
+        "item": {
+          "id": "1596c8cc-c5b3-45b1-9c32-004839664ab7",
+          "name": "Auth - Register",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\",\n  \"fullName\": \"Test User\"\n}"
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8080",
+            "path": [
+              "api",
+              "auth",
+              "register"
+            ],
+            "host": [
+              "host",
+              "docker",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "4c8d03f0-b7ba-4a56-9e4d-0f2a8b9265cb",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.docker.internal:8080",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "94",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\",\n  \"fullName\": \"Test User\"\n}"
+          }
+        },
+        "response": {
+          "id": "86a3d9d7-9edd-442d-8c31-5d7ff227d416",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Method"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Headers"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 26 Nov 2025 10:00:08 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              76,
+              225,
+              187,
+              151,
+              105,
+              32,
+              104,
+              225,
+              187,
+              135,
+              32,
+              116,
+              104,
+              225,
+              187,
+              145,
+              110,
+              103,
+              58,
+              32,
+              69,
+              109,
+              97,
+              105,
+              108,
+              32,
+              196,
+              145,
+              195,
+              163,
+              32,
+              116,
+              225,
+              187,
+              147,
+              110,
+              32,
+              116,
+              225,
+              186,
+              161,
+              105,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 114,
+          "responseSize": 56
+        },
+        "id": "1596c8cc-c5b3-45b1-9c32-004839664ab7"
+      },
+      {
+        "cursor": {
+          "ref": "c0b94a46-652f-4009-97ee-a3a038f4008d",
+          "length": 5,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "eb36a75f-0e96-4d7c-b68a-b75dab3eb41c"
+        },
+        "item": {
+          "id": "c7bee2b3-8c39-47ce-9fb0-4993201e2863",
+          "name": "Auth - Login",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ae8539d0-56be-4c5d-81e8-0bf903aaca68",
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json && json.token) {",
+                  "    pm.environment.set('authToken', json.token);",
+                  "}"
+                ],
+                "_lastExecutionId": "21a1241a-e4ec-4934-8eac-9358f7023c1c"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8080",
+            "path": [
+              "api",
+              "auth",
+              "login"
+            ],
+            "host": [
+              "host",
+              "docker",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "e48dac01-7445-406e-9ea9-bd7172752729",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.docker.internal:8080",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "67",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+          }
+        },
+        "response": {
+          "id": "fb0ae4d1-7d45-4f6c-9bae-11b79ce73273",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Method"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Headers"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 26 Nov 2025 10:00:08 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              76,
+              225,
+              187,
+              151,
+              105,
+              32,
+              104,
+              225,
+              187,
+              135,
+              32,
+              116,
+              104,
+              225,
+              187,
+              145,
+              110,
+              103,
+              58,
+              32,
+              84,
+              104,
+              101,
+              32,
+              115,
+              105,
+              103,
+              110,
+              105,
+              110,
+              103,
+              32,
+              107,
+              101,
+              121,
+              39,
+              115,
+              32,
+              115,
+              105,
+              122,
+              101,
+              32,
+              105,
+              115,
+              32,
+              49,
+              51,
+              54,
+              32,
+              98,
+              105,
+              116,
+              115,
+              32,
+              119,
+              104,
+              105,
+              99,
+              104,
+              32,
+              105,
+              115,
+              32,
+              110,
+              111,
+              116,
+              32,
+              115,
+              101,
+              99,
+              117,
+              114,
+              101,
+              32,
+              101,
+              110,
+              111,
+              117,
+              103,
+              104,
+              32,
+              102,
+              111,
+              114,
+              32,
+              116,
+              104,
+              101,
+              32,
+              72,
+              83,
+              50,
+              53,
+              54,
+              32,
+              97,
+              108,
+              103,
+              111,
+              114,
+              105,
+              116,
+              104,
+              109,
+              46,
+              32,
+              32,
+              84,
+              104,
+              101,
+              32,
+              74,
+              87,
+              84,
+              32,
+              74,
+              87,
+              65,
+              32,
+              83,
+              112,
+              101,
+              99,
+              105,
+              102,
+              105,
+              99,
+              97,
+              116,
+              105,
+              111,
+              110,
+              32,
+              40,
+              82,
+              70,
+              67,
+              32,
+              55,
+              53,
+              49,
+              56,
+              44,
+              32,
+              83,
+              101,
+              99,
+              116,
+              105,
+              111,
+              110,
+              32,
+              51,
+              46,
+              50,
+              41,
+              32,
+              115,
+              116,
+              97,
+              116,
+              101,
+              115,
+              32,
+              116,
+              104,
+              97,
+              116,
+              32,
+              107,
+              101,
+              121,
+              115,
+              32,
+              117,
+              115,
+              101,
+              100,
+              32,
+              119,
+              105,
+              116,
+              104,
+              32,
+              72,
+              83,
+              50,
+              53,
+              54,
+              32,
+              77,
+              85,
+              83,
+              84,
+              32,
+              104,
+              97,
+              118,
+              101,
+              32,
+              97,
+              32,
+              115,
+              105,
+              122,
+              101,
+              32,
+              62,
+              61,
+              32,
+              50,
+              53,
+              54,
+              32,
+              98,
+              105,
+              116,
+              115,
+              32,
+              40,
+              116,
+              104,
+              101,
+              32,
+              107,
+              101,
+              121,
+              32,
+              115,
+              105,
+              122,
+              101,
+              32,
+              109,
+              117,
+              115,
+              116,
+              32,
+              98,
+              101,
+              32,
+              103,
+              114,
+              101,
+              97,
+              116,
+              101,
+              114,
+              32,
+              116,
+              104,
+              97,
+              110,
+              32,
+              111,
+              114,
+              32,
+              101,
+              113,
+              117,
+              97,
+              108,
+              32,
+              116,
+              111,
+              32,
+              116,
+              104,
+              101,
+              32,
+              104,
+              97,
+              115,
+              104,
+              32,
+              111,
+              117,
+              116,
+              112,
+              117,
+              116,
+              32,
+              115,
+              105,
+              122,
+              101,
+              41,
+              46,
+              32,
+              32,
+              67,
+              111,
+              110,
+              115,
+              105,
+              100,
+              101,
+              114,
+              32,
+              117,
+              115,
+              105,
+              110,
+              103,
+              32,
+              116,
+              104,
+              101,
+              32,
+              105,
+              111,
+              46,
+              106,
+              115,
+              111,
+              110,
+              119,
+              101,
+              98,
+              116,
+              111,
+              107,
+              101,
+              110,
+              46,
+              115,
+              101,
+              99,
+              117,
+              114,
+              105,
+              116,
+              121,
+              46,
+              75,
+              101,
+              121,
+              115,
+              32,
+              99,
+              108,
+              97,
+              115,
+              115,
+              39,
+              115,
+              32,
+              39,
+              115,
+              101,
+              99,
+              114,
+              101,
+              116,
+              75,
+              101,
+              121,
+              70,
+              111,
+              114,
+              40,
+              83,
+              105,
+              103,
+              110,
+              97,
+              116,
+              117,
+              114,
+              101,
+              65,
+              108,
+              103,
+              111,
+              114,
+              105,
+              116,
+              104,
+              109,
+              46,
+              72,
+              83,
+              50,
+              53,
+              54,
+              41,
+              39,
+              32,
+              109,
+              101,
+              116,
+              104,
+              111,
+              100,
+              32,
+              116,
+              111,
+              32,
+              99,
+              114,
+              101,
+              97,
+              116,
+              101,
+              32,
+              97,
+              32,
+              107,
+              101,
+              121,
+              32,
+              103,
+              117,
+              97,
+              114,
+              97,
+              110,
+              116,
+              101,
+              101,
+              100,
+              32,
+              116,
+              111,
+              32,
+              98,
+              101,
+              32,
+              115,
+              101,
+              99,
+              117,
+              114,
+              101,
+              32,
+              101,
+              110,
+              111,
+              117,
+              103,
+              104,
+              32,
+              102,
+              111,
+              114,
+              32,
+              72,
+              83,
+              50,
+              53,
+              54,
+              46,
+              32,
+              32,
+              83,
+              101,
+              101,
+              32,
+              104,
+              116,
+              116,
+              112,
+              115,
+              58,
+              47,
+              47,
+              116,
+              111,
+              111,
+              108,
+              115,
+              46,
+              105,
+              101,
+              116,
+              102,
+              46,
+              111,
+              114,
+              103,
+              47,
+              104,
+              116,
+              109,
+              108,
+              47,
+              114,
+              102,
+              99,
+              55,
+              53,
+              49,
+              56,
+              35,
+              115,
+              101,
+              99,
+              116,
+              105,
+              111,
+              110,
+              45,
+              51,
+              46,
+              50,
+              32,
+              102,
+              111,
+              114,
+              32,
+              109,
+              111,
+              114,
+              101,
+              32,
+              105,
+              110,
+              102,
+              111,
+              114,
+              109,
+              97,
+              116,
+              105,
+              111,
+              110,
+              46,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 73,
+          "responseSize": 542
+        },
+        "id": "c7bee2b3-8c39-47ce-9fb0-4993201e2863"
+      },
+      {
+        "cursor": {
+          "ref": "498814a5-77ae-4203-8475-487d05c95cbc",
+          "length": 5,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "79132f4a-8448-48d9-a48c-821afede9e24"
+        },
+        "item": {
+          "id": "0556e644-205c-4f0f-8065-25d3ccb1366d",
+          "name": "Auth - Verify",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "auth",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"code\": \"123456\"\n}"
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8080",
+            "path": [
+              "api",
+              "auth",
+              "verify"
+            ],
+            "host": [
+              "host",
+              "docker",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "20ad2514-5ae4-4da3-81d3-9e6b678cc109",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.docker.internal:8080",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "57",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"code\": \"123456\"\n}"
+          }
+        },
+        "response": {
+          "id": "5eabdb5e-a32f-4ce6-8f24-5321c72322ff",
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Method"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Headers"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "JSESSIONID=F64BD4FE236D79095E9C658872245742; Path=/; HttpOnly"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 26 Nov 2025 10:00:08 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": []
+          },
+          "cookie": [],
+          "responseTime": 38,
+          "responseSize": 0
+        },
+        "id": "0556e644-205c-4f0f-8065-25d3ccb1366d"
+      },
+      {
+        "cursor": {
+          "ref": "4d4ac0a5-b95e-4632-8b6c-9db4ec8e01dd",
+          "length": 5,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "34d61e5b-523d-49d7-9681-39f66b69004e"
+        },
+        "item": {
+          "id": "58d86951-8add-4a84-aca6-a61a23a21503",
+          "name": "Auth - Resend",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "auth",
+                "resend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8080",
+            "path": [
+              "api",
+              "auth",
+              "resend"
+            ],
+            "host": [
+              "host",
+              "docker",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "96cc621a-9a3e-41c8-aefd-ca8ba7188b96",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.docker.internal:8080",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "37",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "JSESSIONID=F64BD4FE236D79095E9C658872245742",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+          }
+        },
+        "response": {
+          "id": "2d8af781-a947-40c9-a420-db23f54bcdb5",
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Method"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Headers"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 26 Nov 2025 10:00:08 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": []
+          },
+          "cookie": [],
+          "responseTime": 22,
+          "responseSize": 0
+        },
+        "id": "58d86951-8add-4a84-aca6-a61a23a21503"
+      },
+      {
+        "cursor": {
+          "ref": "e5c8edb4-50fc-48e9-b288-890c1c8ce551",
+          "length": 5,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "9f745d43-eb3e-4309-a537-6387f7e25557"
+        },
+        "item": {
+          "id": "c255052e-a511-485f-9116-d4078649c1f1",
+          "name": "Groups - List",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "governance",
+                "groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "8080",
+            "path": [
+              "api",
+              "governance",
+              "groups"
+            ],
+            "host": [
+              "host",
+              "docker",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "1a2d43d0-8592-412c-a5e5-312c792a7c24",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.docker.internal:8080",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "JSESSIONID=F64BD4FE236D79095E9C658872245742",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f52371db-b146-4556-a8de-33798f353026",
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Method"
+            },
+            {
+              "key": "Vary",
+              "value": "Access-Control-Request-Headers"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 26 Nov 2025 10:00:08 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": []
+          },
+          "cookie": [],
+          "responseTime": 10,
+          "responseSize": 0
+        },
+        "id": "c255052e-a511-485f-9116-d4078649c1f1"
+      }
+    ],
+    "transfers": {
+      "responseTotal": 598
+    },
+    "failures": [],
+    "error": null
+  }
+}
